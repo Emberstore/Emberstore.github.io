@@ -365,24 +365,38 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
     account: "A Muse account costs Rs 350. We create a fresh account on YOUR email after payment. Just choose the 'Muse account' plan in the form above.",
     tokens: "Token top-ups are added to your own account through your referral link. Paste your referral link in the order form, pay on WhatsApp, and the tokens are added to that account.",
     refund: "Simple and safe - that is our guarantee: if we cannot complete your order, your payment is refunded in full, immediately. You only pay for work that actually gets done. For a refund on an existing order, message an agent on WhatsApp and it will be sorted out right away.",
-    agent: "Sure - tap any agent below to chat on WhatsApp:"
+    agent: "Sure - tap any agent below to chat on WhatsApp:",
+    pc: "On a computer? If WhatsApp does not open when you place an order, do this:\n1. Open web.whatsapp.com in your browser and log in to WhatsApp Web, then come back and tap the order button again.\n2. Or open our website on your mobile phone and order from there - WhatsApp opens directly.\n3. Still stuck? Tap 'Talk to an agent' below.",
+    prices_ru: "Hamari qeematein:\n\u2022 Muse account - Rs 350\n\u2022 1B tokens - Rs 200\n\u2022 5B tokens - Rs 1,000\n\u2022 10B tokens - Rs 1,800\nIs se bare pack (30B tak) ke liye WhatsApp par agent se rate le lein.",
+    order_ru: "Order karna bohat asan hai:\n1. Isi page par apna plan chunein.\n2. Chhota sa form bharein aur 'Place order on WhatsApp' dabayein.\n3. WhatsApp par payment karein - phir hum ap ka account bana denge ya tokens daal denge.",
+    payment_ru: "Payment order ke baad WhatsApp par hoti hai. Agent wahan payment ki tafseel bhej dega (JazzCash, Easypaisa ya bank transfer). Aur guarantee yaad rakhein: agar hum ap ka kaam na kar saken to paisay pooray wapas milenge.",
+    delivery_ru: "Delivery mein kuch waqt lag sakta hai, is liye payment se pehle WhatsApp par agent se delivery ka waqt confirm kar lein. Payment confirm hote hi hum kaam shuru kar dete hain.",
+    india_ru: "India se hain? Aap USDT se payment kar sakte hain:\n1. Binance P2P par UPI ya bank se USDT khareedein.\n2. USDT hamare agent ko Binance par bhejein - agent WhatsApp par tafseel dega aur step by step guide karega.",
+    account_ru: "Muse account sirf Rs 350 ka hai. Payment ke baad hum AAP KI email par fresh account banate hain. Bas form mein 'Muse account' wala plan chunein.",
+    tokens_ru: "Token top-up ap ke apne account mein referral link ke zariye hota hai. Order form mein apna referral link lagayein, WhatsApp par payment karein, tokens usi account mein aa jayenge.",
+    refund_ru: "Bilkul fikar na karein - ye hamari guarantee hai: agar hum ap ka kaam na kar saken to ap ke paisay pooray, foran wapas milenge. Aap sirf usi kaam ke paisay dete hain jo ho jaye. Kisi purane order ke refund ke liye WhatsApp par agent ko message karein, foran hal ho jayega.",
+    agent_ru: "Zaroor - neeche kisi bhi agent se WhatsApp par baat karein:",
+    pc_ru: "Computer par hain? Agar order karte waqt WhatsApp na khule to ye karein:\n1. Browser mein web.whatsapp.com khol kar WhatsApp Web mein login karein, phir wapas aa kar order wala button dabayein.\n2. Ya hamari website apne mobile par kholein aur wahan se order karein - WhatsApp seedha khul jayega.\n3. Phir bhi masla ho to agent se baat karein - neeche 'Talk to an agent' wala chip dabayein."
+
   };
   var CHIPS = [
-    {t:'Prices', k:'prices'}, {t:'How to order', k:'order'}, {t:'Payment', k:'payment'},
+    {t:'Prices', k:'prices'}, {t:'WhatsApp not opening (PC)', k:'pc'}, {t:'How to order', k:'order'}, {t:'Payment', k:'payment'},
     {t:'Delivery time', k:'delivery'}, {t:'Is it safe?', k:'refund'}, {t:'I am from India', k:'india'}, {t:'Talk to an agent', k:'agent'}
   ];
   var RULES = [
-    {w:['price','prices','cost','rate','rates','qeemat','kitne','kitna'], k:'prices'},
-    {w:['order','buy','purchase','kharid','lena hai','chahiye'], k:'order'},
+    {w:['pc','computer','laptop','desktop','whatsapp web','web whatsapp','not opening','open nahi','nahi khul','na khul','khul nahi','khulta nahi'], k:'pc'},
+    {w:['price','prices','cost','rate','rates','qeemat','keemat','kitne','kitna'], k:'prices'},
+    {w:['order','buy','purchase','kharid','lena hai','chahiye','order kesay','kesay order','process'], k:'order'},
     {w:['india','indian','upi','usdt','binance','crypto'], k:'india'},
-    {w:['deliver','delivery','time','kitni dair','kab milega','when'], k:'delivery'},
+    {w:['deliver','delivery','time','kitni dair','kab milega','time lagega','kab ayega','when'], k:'delivery'},
     {w:['pay','payment','jazzcash','easypaisa','bank','paisa'], k:'payment'},
     {w:['refund','wapas','return','scam','fake','guarantee','money back','trust','safe'], k:'refund'},
     {w:['token','tokens','top up','topup','referral'], k:'tokens'},
     {w:['account','signup','sign up','email'], k:'account'},
-    {w:['agent','human','whatsapp','baat','contact','support','help'], k:'agent'}
+    {w:['agent','human','whatsapp','baat','baat karni','contact','support','help'], k:'agent'}
   ];
   var FALLBACK = "I can answer common questions about prices, ordering, payment and delivery. For anything else, please talk to an agent on WhatsApp - they reply during the day.";
+  var FALLBACK_RU = "Main aam sawalon ke jawab de sakta hun - qeemat, order ka tareeqa, payment aur delivery. Is ke ilawa kisi baat ke liye WhatsApp par agent se baat karein, wo din mein jawab dete hain.";
   var panel = document.getElementById('sbPanel'), msgs = document.getElementById('sbMsgs'),
       chips = document.getElementById('sbChips'), input = document.getElementById('sbIn'),
       started = false;
@@ -404,6 +418,15 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
     });
     msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
   }
+
+  var RU_STRONG = ['mujhe','chahiye','chahye','kesay','kese','kesy','batao','bataein','paisay','paise','kitne','milega','khul','bhejo','bhej','krna','karna hai','chahiye hai'];
+  var RU_WORDS = ['hai','hain','nahi','nahin','wala','wali','kya','kab','mera','meri','mere','aap','tum','bhai','acha','theek','lagta','hoga','ayega','jye','jaye','karna','lena','dena','bhi','aur','mein','par','wahan','yahan','kahan','kaun','konsa','kitna'];
+  function isRU(text){
+    var low = ' ' + text.toLowerCase() + ' ', score = 0, i;
+    for (i = 0; i < RU_STRONG.length; i++){ if (low.indexOf(RU_STRONG[i]) !== -1) return true; }
+    for (i = 0; i < RU_WORDS.length; i++){ if (low.indexOf(' ' + RU_WORDS[i] + ' ') !== -1 || low.indexOf(RU_WORDS[i]) !== -1) score++; }
+    return score >= 3;
+  }
   function botReply(text){
     var t = addMsg('...', 'bot');
     setTimeout(function(){
@@ -413,8 +436,9 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
           if (low.indexOf(RULES[i].w[j]) !== -1){ key = RULES[i].k; break; }
         }
       }
-      if (key){ t.textContent = ANSWERS[key]; if (key === 'agent') addAgents(); }
-      else { t.textContent = FALLBACK; }
+      var ru = isRU(text);
+      if (key){ t.textContent = (ru && ANSWERS[key + '_ru']) ? ANSWERS[key + '_ru'] : ANSWERS[key]; if (key === 'agent') addAgents(); }
+      else { t.textContent = ru ? FALLBACK_RU : FALLBACK; }
       msgs.scrollTop = msgs.scrollHeight;
     }, 450);
   }
@@ -434,7 +458,7 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
     panel.classList.add('open');
     if (!started){
       started = true;
-      addMsg("Assalam o Alaikum! I am the Ember Store support bot. Ask me about prices, ordering, payment or delivery - or tap 'Talk to an agent' for a human.", 'bot');
+      addMsg("Assalam o Alaikum! I am the Ember Store support bot. Ask me about prices, ordering, payment or delivery. Aap Roman Urdu mein bhi baat kar sakte hain - mujhe dono zubanain ati hain.", 'bot');
     }
     setTimeout(function(){ input.focus(); }, 60);
   }
