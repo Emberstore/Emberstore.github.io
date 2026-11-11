@@ -95,6 +95,31 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
 @media(max-width:980px){.grid{grid-template-columns:1fr 1fr}}
 @media(max-width:860px){.order-grid{grid-template-columns:1fr;gap:40px}}
 @media(max-width:520px){.grid{grid-template-columns:1fr}}
+
+/* Ember support bot */
+.sb-btn{position:fixed;right:18px;bottom:18px;z-index:90;background:var(--accent);color:#0a0a0a;border:none;border-radius:100px;padding:14px 20px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 12px 30px -8px rgba(0,0,0,.5);display:flex;align-items:center;gap:9px}
+.sb-btn svg{width:18px;height:18px}
+.sb-panel{position:fixed;right:18px;bottom:82px;z-index:91;width:min(92vw,360px);height:min(68vh,540px);background:#fff;color:#0a0a0a;border-radius:18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55);display:none;flex-direction:column;overflow:hidden}
+.sb-panel.open{display:flex}
+.sb-head{background:#0a0a0a;color:#fff;padding:15px 18px;display:flex;align-items:center;gap:11px}
+.sb-ava{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#0a0a0a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex:none}
+.sb-head b{font-size:15px;font-weight:600;display:block}
+.sb-head span{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.sb-on{width:7px;height:7px;border-radius:50%;background:#37d67a;display:inline-block}
+.sb-x{margin-left:auto;background:none;border:none;color:#fff;font-size:19px;cursor:pointer;line-height:1;padding:4px}
+.sb-msgs{flex:1;overflow-y:auto;padding:14px;background:#f6f6f6;display:flex;flex-direction:column;gap:9px}
+.sb-m{max-width:82%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5;font-weight:300;white-space:pre-wrap;word-wrap:break-word}
+.sb-m.bot{background:#fff;border:1px solid rgba(10,10,10,.09);align-self:flex-start;border-bottom-left-radius:4px}
+.sb-m.me{background:#0a0a0a;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.sb-m a{color:#e07f00;font-weight:600;text-decoration:underline}
+.sb-chips{display:flex;gap:7px;flex-wrap:wrap;padding:10px 12px;background:#f6f6f6;border-top:1px solid rgba(10,10,10,.07)}
+.sb-chip{background:#fff;border:1px solid rgba(10,10,10,.16);border-radius:100px;padding:7px 12px;font-size:12.5px;font-family:inherit;cursor:pointer;font-weight:500}
+.sb-chip:active{background:#0a0a0a;color:#fff}
+.sb-row{display:flex;gap:8px;padding:11px 12px;background:#fff;border-top:1px solid rgba(10,10,10,.09)}
+.sb-in{flex:1;background:#f2f2f2;border:1px solid transparent;border-radius:100px;padding:11px 15px;font-size:16px;font-family:inherit;outline:none;color:#0a0a0a}
+.sb-send{background:var(--accent);border:none;border-radius:50%;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+.sb-send svg{width:16px;height:16px}
+@media(max-width:520px){.sb-panel{right:10px;bottom:76px}.sb-btn{right:12px;bottom:14px}}
 </style>
 </head>
 <body>
@@ -290,6 +315,122 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
     window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(msg), '_blank');
   });
   update();
+</script>
+
+<button class="sb-btn" id="sbBtn" aria-label="Open support chat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg>
+  Support
+</button>
+<div class="sb-panel" id="sbPanel" role="dialog" aria-label="Ember support bot">
+  <div class="sb-head">
+    <div class="sb-ava">E</div>
+    <div><b>Ember Support</b><span><span class="sb-on"></span> Bot - replies instantly</span></div>
+    <button class="sb-x" id="sbClose" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="sb-msgs" id="sbMsgs"></div>
+  <div class="sb-chips" id="sbChips"></div>
+  <div class="sb-row">
+    <input class="sb-in" id="sbIn" type="text" placeholder="Type your question..." autocomplete="off">
+    <button class="sb-send" id="sbSend" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.4"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+(function(){
+  var AGENTS = [
+    {n:'Agent 1', w:'923099509916'},
+    {n:'Agent 2', w:'923420876619'},
+    {n:'Agent 3', w:'923241505285'}
+  ];
+  var ANSWERS = {
+    prices: "Our prices:\n\u2022 Muse account - Rs 350\n\u2022 1B tokens - Rs 200\n\u2022 5B tokens - Rs 1,000\n\u2022 10B tokens - Rs 1,800\nFor bigger packs (up to 30B), ask an agent on WhatsApp for the rate.",
+    order: "Ordering takes a minute:\n1. Pick a plan on this page.\n2. Fill the small form and tap 'Place order on WhatsApp'.\n3. Pay on WhatsApp - we then create your account or add your tokens.",
+    payment: "Payment is taken on WhatsApp after you place your order. The agent will share the payment details there (JazzCash, Easypaisa or bank transfer).",
+    delivery: "Delivery can take some time, so please confirm the delivery time with the agent on WhatsApp before you pay. We start work as soon as payment is confirmed.",
+    india: "From India? You can pay with USDT:\n1. Buy USDT on Binance P2P using UPI or bank transfer.\n2. Send the USDT to our agent on Binance - the agent will give you the details on WhatsApp and guide you step by step.",
+    account: "A Muse account costs Rs 350. We create a fresh account on YOUR email after payment. Just choose the 'Muse account' plan in the form above.",
+    tokens: "Token top-ups are added to your own account through your referral link. Paste your referral link in the order form, pay on WhatsApp, and the tokens are added to that account.",
+    refund: "For refund questions, please talk to an agent on WhatsApp - they will check your order and help you.",
+    agent: "Sure - tap any agent below to chat on WhatsApp:"
+  };
+  var CHIPS = [
+    {t:'Prices', k:'prices'}, {t:'How to order', k:'order'}, {t:'Payment', k:'payment'},
+    {t:'Delivery time', k:'delivery'}, {t:'I am from India', k:'india'}, {t:'Talk to an agent', k:'agent'}
+  ];
+  var RULES = [
+    {w:['price','prices','cost','rate','rates','qeemat','kitne','kitna'], k:'prices'},
+    {w:['order','buy','purchase','kharid','lena hai','chahiye'], k:'order'},
+    {w:['india','indian','upi','usdt','binance','crypto'], k:'india'},
+    {w:['deliver','delivery','time','kitni dair','kab milega','when'], k:'delivery'},
+    {w:['pay','payment','jazzcash','easypaisa','bank','paisa'], k:'payment'},
+    {w:['refund','wapas','return'], k:'refund'},
+    {w:['token','tokens','top up','topup','referral'], k:'tokens'},
+    {w:['account','signup','sign up','email'], k:'account'},
+    {w:['agent','human','whatsapp','baat','contact','support','help'], k:'agent'}
+  ];
+  var FALLBACK = "I can answer common questions about prices, ordering, payment and delivery. For anything else, please talk to an agent on WhatsApp - they reply during the day.";
+  var panel = document.getElementById('sbPanel'), msgs = document.getElementById('sbMsgs'),
+      chips = document.getElementById('sbChips'), input = document.getElementById('sbIn'),
+      started = false;
+  function addMsg(text, who){
+    var d = document.createElement('div');
+    d.className = 'sb-m ' + who; d.textContent = text;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  function addAgents(){
+    var d = document.createElement('div');
+    d.className = 'sb-m bot';
+    AGENTS.forEach(function(a, i){
+      var link = document.createElement('a');
+      link.href = 'https://wa.me/' + a.w + '?text=' + encodeURIComponent('Hi, I have a question about Ember Store.');
+      link.target = '_blank'; link.rel = 'noopener'; link.textContent = a.n + ' on WhatsApp';
+      d.appendChild(link);
+      if (i < AGENTS.length - 1) d.appendChild(document.createTextNode('  \u00b7  '));
+    });
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+  function botReply(text){
+    var t = addMsg('...', 'bot');
+    setTimeout(function(){
+      var key = null, low = text.toLowerCase();
+      for (var i = 0; i < RULES.length && !key; i++){
+        for (var j = 0; j < RULES[i].w.length; j++){
+          if (low.indexOf(RULES[i].w[j]) !== -1){ key = RULES[i].k; break; }
+        }
+      }
+      if (key){ t.textContent = ANSWERS[key]; if (key === 'agent') addAgents(); }
+      else { t.textContent = FALLBACK; }
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 450);
+  }
+  function send(text){
+    var v = (text || input.value || '').trim();
+    if (!v) return;
+    addMsg(v, 'me'); input.value = '';
+    botReply(v);
+  }
+  CHIPS.forEach(function(c){
+    var b = document.createElement('button');
+    b.className = 'sb-chip'; b.textContent = c.t;
+    b.addEventListener('click', function(){ addMsg(c.t, 'me'); botReply(c.k === 'agent' ? 'agent' : c.t); });
+    chips.appendChild(b);
+  });
+  function open(){
+    panel.classList.add('open');
+    if (!started){
+      started = true;
+      addMsg("Assalam o Alaikum! I am the Ember Store support bot. Ask me about prices, ordering, payment or delivery - or tap 'Talk to an agent' for a human.", 'bot');
+    }
+    setTimeout(function(){ input.focus(); }, 60);
+  }
+  function close(){ panel.classList.remove('open'); }
+  document.getElementById('sbBtn').addEventListener('click', function(){ panel.classList.contains('open') ? close() : open(); });
+  document.getElementById('sbClose').addEventListener('click', close);
+  document.getElementById('sbSend').addEventListener('click', function(){ send(); });
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); send(); } });
+})();
 </script>
 </body>
 </html>
