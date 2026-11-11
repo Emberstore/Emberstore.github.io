@@ -220,18 +220,28 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
 </div></footer>
 
 <script>
-    // Paste your Google Apps Script web app URL here (see apps-script-code.gs). Leave as is to disable tracking.
-  const ORDERS_URL = 'YOUR_APPS_SCRIPT_URL';
-  const tracking = ORDERS_URL.indexOf('YOUR_APPS_SCRIPT_URL') === -1;
+    // Order notifications are emailed to the store inbox via Web3Forms. The order count is never shown on this page.
+  const WEB3_KEY = 'ca10af00-04a8-40fe-8773-730a645cf92c';
 
-  function loadCount(){
-    if (!tracking) return;
-    fetch(ORDERS_URL).then(function(r){return r.json();}).then(function(d){
-      if (d && d.count > 0){
-        document.getElementById('cnt').textContent = d.count;
-        document.getElementById('stat').style.display = 'inline-flex';
-      }
-    }).catch(function(){});
+  function sendOrderEmail(order){
+    try {
+      fetch('https://api.web3forms.com/submit', {
+        method:'POST', keepalive:true,
+        headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+        body: JSON.stringify({
+          access_key: WEB3_KEY,
+          subject: 'New Ember Store order - ' + order.plan,
+          from_name: 'Ember Store website',
+          name: order.name || '(no name)',
+          plan: order.plan,
+          price: 'Rs ' + order.price.toLocaleString('en-US'),
+          email: order.email || undefined,
+          referral: order.referral || undefined,
+          whatsapp_number: order.whatsapp,
+          message: order.message
+        })
+      }).catch(function(){});
+    } catch(err){}
   }
 
   const PLANS = {
@@ -275,17 +285,10 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
       (p.tokens ? 'Referral: ' + ref + '\n' : 'Email: ' + email + '\n') +
       'Please share payment details.';
     const waNum = document.getElementById('wa').value;
-    if (tracking){
-      try {
-        fetch(ORDERS_URL, {method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain'},
-          body: JSON.stringify({name:name, plan:p.label, price:p.price, email:p.tokens?'':email, referral:p.tokens?ref:'', whatsapp:waNum})});
-      } catch(err){}
-      setTimeout(loadCount, 3000);
-    }
+    sendOrderEmail({name:name, plan:p.label, price:p.price, email:p.tokens?'':email, referral:p.tokens?ref:'', whatsapp:waNum, message:msg});
     window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(msg), '_blank');
   });
   update();
-  loadCount();
 </script>
 </body>
 </html>
