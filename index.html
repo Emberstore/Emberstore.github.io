@@ -120,6 +120,12 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
 .sb-send{background:var(--accent);border:none;border-radius:50%;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
 .sb-send svg{width:16px;height:16px}
 @media(max-width:520px){.sb-panel{right:10px;bottom:76px}.sb-btn{right:12px;bottom:14px}}
+
+/* Money-back guarantee band */
+.guarantee{display:flex;gap:16px;align-items:flex-start;background:#0a0a0a;color:#fff;border-radius:18px;padding:22px 24px;margin:0 auto 26px;max-width:640px;box-shadow:0 20px 40px -22px rgba(0,0,0,.45)}
+.guarantee .g-ico{font-size:30px;line-height:1.1;flex:none}
+.guarantee b{display:block;font-size:17px;font-weight:600;color:var(--accent);margin-bottom:5px}
+.guarantee p{font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.82);font-weight:300;margin:0}
 </style>
 </head>
 <body>
@@ -197,7 +203,15 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
         <li><b>03</b> Pay there, and we create your account or add your tokens.</li>
       </ul>
     </div>
-    <form id="orderForm" novalidate>
+    
+      <div class="guarantee">
+        <div class="g-ico">🛡️</div>
+        <div>
+          <b>100% Money-Back Guarantee</b>
+          <p>Ember Store is a real service — not a scam. If we cannot complete your order, your payment is refunded in full, immediately. You only pay for work that actually gets done.</p>
+        </div>
+      </div>
+      <form id="orderForm" novalidate>
       <div class="field">
         <label for="name">Your name</label>
         <input id="name" type="text" placeholder="Your name" autocomplete="name">
@@ -346,17 +360,17 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
   var ANSWERS = {
     prices: "Our prices:\n\u2022 Muse account - Rs 350\n\u2022 1B tokens - Rs 200\n\u2022 5B tokens - Rs 1,000\n\u2022 10B tokens - Rs 1,800\nFor bigger packs (up to 30B), ask an agent on WhatsApp for the rate.",
     order: "Ordering takes a minute:\n1. Pick a plan on this page.\n2. Fill the small form and tap 'Place order on WhatsApp'.\n3. Pay on WhatsApp - we then create your account or add your tokens.",
-    payment: "Payment is taken on WhatsApp after you place your order. The agent will share the payment details there (JazzCash, Easypaisa or bank transfer).",
+    payment: "Payment is taken on WhatsApp after you place your order. The agent will share the payment details there (JazzCash, Easypaisa or bank transfer). And you are covered by our guarantee: if we cannot complete your order, you are refunded in full.",
     delivery: "Delivery can take some time, so please confirm the delivery time with the agent on WhatsApp before you pay. We start work as soon as payment is confirmed.",
     india: "From India? You can pay with USDT:\n1. Buy USDT on Binance P2P using UPI or bank transfer.\n2. Send the USDT to our agent on Binance - the agent will give you the details on WhatsApp and guide you step by step.",
     account: "A Muse account costs Rs 350. We create a fresh account on YOUR email after payment. Just choose the 'Muse account' plan in the form above.",
     tokens: "Token top-ups are added to your own account through your referral link. Paste your referral link in the order form, pay on WhatsApp, and the tokens are added to that account.",
-    refund: "For refund questions, please talk to an agent on WhatsApp - they will check your order and help you.",
+    refund: "Simple and safe - that is our guarantee: if we cannot complete your order, your payment is refunded in full, immediately. You only pay for work that actually gets done. For a refund on an existing order, message an agent on WhatsApp and it will be sorted out right away.",
     agent: "Sure - tap any agent below to chat on WhatsApp:"
   };
   var CHIPS = [
     {t:'Prices', k:'prices'}, {t:'How to order', k:'order'}, {t:'Payment', k:'payment'},
-    {t:'Delivery time', k:'delivery'}, {t:'I am from India', k:'india'}, {t:'Talk to an agent', k:'agent'}
+    {t:'Delivery time', k:'delivery'}, {t:'Is it safe?', k:'refund'}, {t:'I am from India', k:'india'}, {t:'Talk to an agent', k:'agent'}
   ];
   var RULES = [
     {w:['price','prices','cost','rate','rates','qeemat','kitne','kitna'], k:'prices'},
@@ -364,7 +378,7 @@ footer{border-top:1px solid var(--border-dark);padding:36px 0}
     {w:['india','indian','upi','usdt','binance','crypto'], k:'india'},
     {w:['deliver','delivery','time','kitni dair','kab milega','when'], k:'delivery'},
     {w:['pay','payment','jazzcash','easypaisa','bank','paisa'], k:'payment'},
-    {w:['refund','wapas','return'], k:'refund'},
+    {w:['refund','wapas','return','scam','fake','guarantee','money back','trust','safe'], k:'refund'},
     {w:['token','tokens','top up','topup','referral'], k:'tokens'},
     {w:['account','signup','sign up','email'], k:'account'},
     {w:['agent','human','whatsapp','baat','contact','support','help'], k:'agent'}
